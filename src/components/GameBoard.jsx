@@ -8,8 +8,9 @@ export default function GameBoard () {
     const [gameBoard,setGameBoard] = useState(initalGameBoard);
     function handlerClick (rowIndex,colIndex) {
         setGameBoard((prevGameBoard) => {
-            prevGameBoard[rowIndex][colIndex] = 'X';
-            return prevGameBoard;
+            const updatedBoard = [...prevGameBoard.map(innerArray => [...innerArray])];
+            updatedBoard[rowIndex][colIndex] = 'X';
+            return updatedBoard;
         })
     }
     return (
