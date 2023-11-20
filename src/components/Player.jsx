@@ -8,7 +8,7 @@ export default function Player({ initalName , symbol , isActive}) {
     }
 
     function handlerChange(event) {
-        setPlayerName(event.target.value);
+        setPlayerName(event.target.value);        
     }
 
     let editableName = <span className="player-name">{isPlayerName}</span>;
