@@ -3,6 +3,11 @@ import Player from "./components/Player";
 import GameBoard from "./components/GameBoard";
 import Log from './components/Log';
 import { WINNING_COMBINATIONS } from './winning-combinations.js';
+const initalGameBoard = [
+  [null, null, null],
+  [null, null, null],
+  [null, null, null]
+]
 
 function deriveActivePlayer(gameTurns) {
   let currentPlayer = 'X';
@@ -12,10 +17,21 @@ function deriveActivePlayer(gameTurns) {
 
   return currentPlayer;
 }
+
 function App() {
   const [gameTurns, setGameTurns] = useState([]);
   // const [activePlayer, setActivePlayer] = useState('X');
   const activePlayer = deriveActivePlayer(gameTurns);
+
+  let gameBoard = initalGameBoard;
+
+  for (const turn of gameTurns) {
+    const { square, player } = turn;
+    const { row, col } = square;
+
+    // Deriving State from Props
+    gameBoard[row][col] = player;
+  }
 
   function handlerSelectSqure(rowIndex, colIndex) {
     // setActivePlayer((perviousPlayer) => perviousPlayer === 'X' ? 'O' : 'X');
@@ -37,7 +53,7 @@ function App() {
         </ol>
         <GameBoard
           onSelectSqure={handlerSelectSqure}
-          turns={gameTurns} />
+          board={gameBoard} />
       </div>
       <Log turns={gameTurns} />
     </main>
