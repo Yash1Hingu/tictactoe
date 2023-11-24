@@ -33,6 +33,20 @@ function App() {
     gameBoard[row][col] = player;
   }
 
+  let winner;
+  for (const combination of WINNING_COMBINATIONS) {
+    const firstSqureSymbol = gameBoard[combination[0].row][combination[0].col];
+    const secondSqureSymbol = gameBoard[combination[1].row][combination[1].col];
+    const thirdSqureSymbol = gameBoard[combination[2].row][combination[2].col];
+
+    if (firstSqureSymbol &&
+      firstSqureSymbol === secondSqureSymbol &&
+      firstSqureSymbol === thirdSqureSymbol
+    ) {
+      winner = firstSqureSymbol;
+    }
+  }
+
   function handlerSelectSqure(rowIndex, colIndex) {
     // setActivePlayer((perviousPlayer) => perviousPlayer === 'X' ? 'O' : 'X');
 
@@ -51,6 +65,7 @@ function App() {
           <Player initalName='Player 1' symbol='X' isActive={activePlayer === 'X'} />
           <Player initalName='Player 2' symbol='O' isActive={activePlayer === 'O'} />
         </ol>
+        {winner && <p>You Won {winner}!</p>}
         <GameBoard
           onSelectSqure={handlerSelectSqure}
           board={gameBoard} />
