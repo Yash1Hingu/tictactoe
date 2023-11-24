@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Player from "./components/Player";
 import GameBoard from "./components/GameBoard";
+import GameOver from './components/GameOver.jsx';
 import Log from './components/Log';
 import { WINNING_COMBINATIONS } from './winning-combinations.js';
 const initalGameBoard = [
@@ -47,6 +48,8 @@ function App() {
     }
   }
 
+  const hasDrawn = gameTurns.length == 9 && !winner;
+
   function handlerSelectSqure(rowIndex, colIndex) {
     // setActivePlayer((perviousPlayer) => perviousPlayer === 'X' ? 'O' : 'X');
 
@@ -65,7 +68,7 @@ function App() {
           <Player initalName='Player 1' symbol='X' isActive={activePlayer === 'X'} />
           <Player initalName='Player 2' symbol='O' isActive={activePlayer === 'O'} />
         </ol>
-        {winner && <p>You Won {winner}!</p>}
+        {(winner || hasDrawn) && <GameOver winner={winner} />}
         <GameBoard
           onSelectSqure={handlerSelectSqure}
           board={gameBoard} />
