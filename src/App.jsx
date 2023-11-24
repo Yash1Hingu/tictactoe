@@ -4,7 +4,13 @@ import GameBoard from "./components/GameBoard";
 import GameOver from './components/GameOver.jsx';
 import Log from './components/Log';
 import { WINNING_COMBINATIONS } from './winning-combinations.js';
-const initalGameBoard = [
+
+const PLAYERS = {
+  X : 'Player 1',
+  O : 'Player 2'
+}
+
+const INITAL_GAMEBOARD = [
   [null, null, null],
   [null, null, null],
   [null, null, null]
@@ -37,16 +43,8 @@ function deriveWinner(gameBoard, players) {
   return winner;
 }
 
-function App() {
-  const [players, setPlayers] = useState({
-    'X': 'Player 1',
-    'O': 'Player 2'
-  });
-  const [gameTurns, setGameTurns] = useState([]);
-  // const [activePlayer, setActivePlayer] = useState('X');
-  const activePlayer = deriveActivePlayer(gameTurns);
-
-  let gameBoard = [...initalGameBoard.map(array => [...array])];
+function derivegameBoard(gameTurns) {
+  let gameBoard = [...INITAL_GAMEBOARD.map(array => [...array])];
 
   for (const turn of gameTurns) {
     const { square, player } = turn;
@@ -56,7 +54,19 @@ function App() {
     gameBoard[row][col] = player;
   }
 
-  const winner = deriveWinner(gameBoard,players);
+  return gameBoard;
+
+}
+
+function App() {
+  const [players, setPlayers] = useState(PLAYERS);
+  const [gameTurns, setGameTurns] = useState([]);
+
+  const activePlayer = deriveActivePlayer(gameTurns);
+
+  const gameBoard = derivegameBoard(gameTurns);
+
+  const winner = deriveWinner(gameBoard, players);
 
   const hasDrawn = gameTurns.length == 9 && !winner;
 
@@ -89,13 +99,13 @@ function App() {
       <div id="game-container">
         <ol id="players" className='highlight-player'>
           <Player
-            initalName='Player 1'
+            initalName={PLAYERS.X}
             symbol='X'
             isActive={activePlayer === 'X'}
             onNameChange={handlerPlayerNameChange}
           />
           <Player
-            initalName='Player 2'
+            initalName={PLAYERS.O}
             symbol='O'
             isActive={activePlayer === 'O'}
             onNameChange={handlerPlayerNameChange}
