@@ -19,6 +19,24 @@ function deriveActivePlayer(gameTurns) {
   return currentPlayer;
 }
 
+function deriveWinner(gameBoard, players) {
+  let winner;
+  for (const combination of WINNING_COMBINATIONS) {
+    const firstSqureSymbol = gameBoard[combination[0].row][combination[0].col];
+    const secondSqureSymbol = gameBoard[combination[1].row][combination[1].col];
+    const thirdSqureSymbol = gameBoard[combination[2].row][combination[2].col];
+
+    if (firstSqureSymbol &&
+      firstSqureSymbol === secondSqureSymbol &&
+      firstSqureSymbol === thirdSqureSymbol
+    ) {
+      winner = players[firstSqureSymbol];
+    }
+  }
+
+  return winner;
+}
+
 function App() {
   const [players, setPlayers] = useState({
     'X': 'Player 1',
@@ -38,19 +56,7 @@ function App() {
     gameBoard[row][col] = player;
   }
 
-  let winner;
-  for (const combination of WINNING_COMBINATIONS) {
-    const firstSqureSymbol = gameBoard[combination[0].row][combination[0].col];
-    const secondSqureSymbol = gameBoard[combination[1].row][combination[1].col];
-    const thirdSqureSymbol = gameBoard[combination[2].row][combination[2].col];
-
-    if (firstSqureSymbol &&
-      firstSqureSymbol === secondSqureSymbol &&
-      firstSqureSymbol === thirdSqureSymbol
-    ) {
-      winner = players[firstSqureSymbol];
-    }
-  }
+  const winner = deriveWinner(gameBoard,players);
 
   const hasDrawn = gameTurns.length == 9 && !winner;
 
@@ -87,7 +93,7 @@ function App() {
             symbol='X'
             isActive={activePlayer === 'X'}
             onNameChange={handlerPlayerNameChange}
-            />
+          />
           <Player
             initalName='Player 2'
             symbol='O'
